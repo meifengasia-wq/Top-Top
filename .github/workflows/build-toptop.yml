@@ -11,9 +11,18 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Extract TopTop source
+        run: |
+          rm -rf SwipeFlowLite
+          unzip -q TopTop_Source.zip
+          test -f SwipeFlowLite/settings.gradle
+          test -f SwipeFlowLite/app/build.gradle
+          echo "TopTop source extracted OK"
 
       - name: Set up Java 17
         uses: actions/setup-java@v6
@@ -31,14 +40,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: '8.11.1'
-          cache-provider: basic
-
-      - name: Extract TopTop source
-        run: |
-          rm -rf SwipeFlowLite
-          unzip -q TopTop_Source.zip
-          test -f SwipeFlowLite/settings.gradle
-          test -f SwipeFlowLite/app/build.gradle
 
       - name: Build debug APK
         working-directory: SwipeFlowLite
